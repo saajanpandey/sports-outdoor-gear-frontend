@@ -9,6 +9,9 @@ function App() {
   return (
     <>
       <div>
+        <AutoForm />
+      </div>
+      <div>
         <a href="https://vite.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
         </a>
@@ -29,6 +32,8 @@ function App() {
         Click on the Vite and React logos to learn more
       </p>
     </>
+
+
   )
 }
 
