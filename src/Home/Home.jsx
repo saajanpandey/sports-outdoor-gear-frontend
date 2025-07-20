@@ -6,7 +6,7 @@ import '../Home/Home.css'
 function Home() {
   return (
     <>
-      <Header />
+    
       <div className="home-container">
         <section className="home-hero">
           <h2>Welcome to Sports Outdoor Gear!</h2>
@@ -101,7 +101,7 @@ function Home() {
         </section>
 
       </div>
-      <Footer />
+      
     </>
  )
 }

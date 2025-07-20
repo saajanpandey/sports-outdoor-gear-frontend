@@ -1,11 +1,8 @@
 /* Make sure the body and root fill the viewport */
 html, body, #root {
   height: 100%;
+  width: 100%;
   margin: 0;
   padding: 0;
-}
-
-/* Optional: Remove scrollbars caused by margin/padding */
-body {
   box-sizing: border-box;
 }
