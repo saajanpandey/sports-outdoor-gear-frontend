@@ -1,9 +1,14 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import './AuthForm.css';
+import { toast, ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+
 
 export default function AuthForm() {
   const [isLogin, setIsLogin] = useState(true);
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     first_name: '',
@@ -47,8 +52,33 @@ export default function AuthForm() {
     }
   };
 
+  const handleLogin = async () => {
+    const { email, password } = formData;
+
+    if (!email || !password) {
+      toast.error("Please enter email and password!");
+      return;
+    }
+
+    try {
+      const response = await axios.post("http://localhost:3000/api/user/login", {
+        email,
+        password,
+      });
+      toast.success("Login successful!", { position: "top-right", autoClose: 7000 });
+      setTimeout(() => { navigate("/home"); }, 700);
+      console.log("User logged in:", response.data);
+    } catch (error) {
+      console.error("Login error:", error.response?.data || error.message);
+      toast.error("Login failed. Please check your credentials.");
+    }
+  };
+
+
+
   return (
     <div className="container">
+      <ToastContainer position="top-right" autoClose={7000} />
       <div className="form-container">
         <div className="form-toggle">
           <button className={isLogin ? 'active' : ""} onClick={() => setIsLogin(true)}>Login</button>
@@ -60,7 +90,7 @@ export default function AuthForm() {
             <input type="email" name="email" placeholder="Email" required onChange={handleChange} />
             <input type="password" name="password" placeholder="Password" required onChange={handleChange} />
             <a href="#">Forgot Password?</a>
-            <button>Login</button>
+            <button onClick={handleLogin}>Login</button>
             <p>Not a member? <a href="#" onClick={() => setIsLogin(false)}>SignUp Now</a></p>
           </div>
         ) : (
