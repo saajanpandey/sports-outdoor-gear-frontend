@@ -1,37 +1,81 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
+import './AuthForm.css';
 
-export default function AutoForm() {
-    const [isLogin, setIsLogin] = React.useState(true);
-    return (
-        <div className="container">
-            <div className="form-container">
-                <div className="form-toggle">
-                    <button className={isLogin ? 'active' : ""} onClick={() => setIsLogin(true)}>Login</button>
-                    <button className={!isLogin ? 'active' : ""} onClick={() => setIsLogin(false)}>Signup</button>
-                </div>
-                {isLogin ? <>
-                    <div className="form">
-                        <h2>Login Form</h2>
-                        <input type="email" placeholder="Email" required />
-                        <input type="password" placeholder="Password" required />
-                        <a href='#'> Forgot Password?</a>
-                        <button>Login</button>
-                        <p>Not a member? <a href='#' onClick={() => setIsLogin(false)}> SignUp Now</a>
-                        </p>
+export default function AuthForm() {
+  const [isLogin, setIsLogin] = useState(true);
 
-                    </div>
-                </> : <>
-                    <div className="form">
-                        <h2>SignUp Form</h2>
-                        <input type="email" placeholder="Email" required />
-                        <input type="password" placeholder="Password" required />
-                        <input type="password" placeholder="Confirm Password" required />
-                        <button>Login</button>
-                    </div>
-                </>
-                }
-            </div>
+  const [formData, setFormData] = useState({
+    first_name: '',
+    last_name: '',
+    address: '',
+    phone: '',
+    email: '',
+    password: '',
+    role: '',
+  });
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSignup = async () => {
+    const { first_name, last_name, address, phone, email, password, role } = formData;
+
+    if (!email || !password || !first_name || !last_name || !address || !phone || !role) {
+      alert("Please fill in all fields!");
+      return;
+    }
+
+    try {
+      const response = await axios.post("http://localhost:3000/api/user/", {
+        first_name,
+        last_name,
+        address,
+        phone,
+        email,
+        password,
+        role: parseInt(role) || 0 // assuming role is a number like 0 for user
+      });
+
+      alert("Registration successful!");
+      console.log("User registered:", response.data);
+      setIsLogin(true); // Switch to login
+    } catch (error) {
+      console.error("Signup error:", error.response?.data || error.message);
+      alert("Signup failed. Check console for details.");
+    }
+  };
+
+  return (
+    <div className="container">
+      <div className="form-container">
+        <div className="form-toggle">
+          <button className={isLogin ? 'active' : ""} onClick={() => setIsLogin(true)}>Login</button>
+          <button className={!isLogin ? 'active' : ""} onClick={() => setIsLogin(false)}>Signup</button>
         </div>
 
-    );
+        {isLogin ? (
+          <div className="form">
+            <input type="email" name="email" placeholder="Email" required onChange={handleChange} />
+            <input type="password" name="password" placeholder="Password" required onChange={handleChange} />
+            <a href="#">Forgot Password?</a>
+            <button>Login</button>
+            <p>Not a member? <a href="#" onClick={() => setIsLogin(false)}>SignUp Now</a></p>
+          </div>
+        ) : (
+          <div className="form">
+            <input type="text" name="first_name" placeholder="First Name" required onChange={handleChange} />
+            <input type="text" name="last_name" placeholder="Last Name" required onChange={handleChange} />
+            <input type="text" name="address" placeholder="Address" required onChange={handleChange} />
+            <input type="tel" name="phone" placeholder="Phone" required onChange={handleChange} />
+            <input type="email" name="email" placeholder="Email" required onChange={handleChange} />
+            <input type="password" name="password" placeholder="Password" required onChange={handleChange} />
+            <input type="text" name="role" placeholder="Role (e.g., 0 for user)" required onChange={handleChange} />
+            <button onClick={handleSignup}>SignUp</button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
 }

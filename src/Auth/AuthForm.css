@@ -3,25 +3,30 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
   margin: 0;
   background-color: #0C67A0;
+  padding: 20px; /* add padding for small screens */
+  box-sizing: border-box;
 }
 
 .container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+  max-width: 400px;
   width: 100%;
+  margin: 0 auto;       /* centers container horizontally */
+  display: flex;
+  flex-direction: column; /* stack toggle and form vertically */
+  align-items: stretch;   /* stretch children to container width */
 }
+
 
 .form-container {
   background-color: white;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 300px;
+  width: 100%; /* full width of container */
+  box-sizing: border-box;
 }
 
 .form-toggle {
@@ -31,18 +36,25 @@ body {
 }
 
 .form-toggle button {
-  width: 50%;
+  flex: 1; /* fill available space equally */
   padding: 10px;
   background-color: #f3f3f3;
   border: none;
   cursor: pointer;
   font-size: 16px;
   border-radius: 10px 10px 0 0;
+  transition: background-color 0.3s ease;
 }
+
+
 
 .form-toggle .active {
   background-color: #033452;
   color: white;
+}
+
+.form-toggle button:hover:not(.active) {
+  background-color: #d9d9d9;
 }
 
 .form {
@@ -52,6 +64,8 @@ body {
 
 .form h2 {
   margin-bottom: 20px;
+  font-size: 1.5rem;
+  text-align: center;
 }
 
 .form input {
@@ -59,15 +73,28 @@ body {
   margin-bottom: 10px;
   border: 1px solid #ddd;
   border-radius: 5px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.form input:focus {
+  outline: 2px solid #033452;
+  outline-offset: 2px;
 }
 
 .form button {
   padding: 10px;
-  background-color:#033452;
+  background-color: #033452;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.form button:hover {
+  background-color: #02557a;
 }
 
 .form a {
@@ -75,8 +102,33 @@ body {
   text-decoration: none;
   margin-bottom: 10px;
   text-align: right;
+  font-size: 0.9rem;
 }
 
 .form p {
   text-align: center;
+  font-size: 0.9rem;
+}
+
+/* Responsive tweaks */
+@media (max-width: 480px) {
+  .form-container {
+    padding: 15px;
+    width: 100%;
+  }
+
+  .form-toggle button {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .form h2 {
+    font-size: 1.3rem;
+  }
+
+  .form input,
+  .form button {
+    font-size: 0.9rem;
+    padding: 8px;
+  }
 }

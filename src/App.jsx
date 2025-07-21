@@ -1,21 +1,31 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import './App.css'
 import Home from './Home/Home'
+import About from './About/About'
+import Header from './Header/Header'
+import Footer from './Footer/Footer'
+import Contact from './Contact/Contact'
+import Products from './Products/Product'
+import AuthForm from './Auth/AuthForm'
+
 
 function App() {
-  const [count, setCount] = useState(0)
 
-  return (
-    <>
-    <div style={{ minHeight: '100vh', minWidth: '98vw', display: 'flex', flexDirection: 'column' }}>
-      <Home />
-    </div>
-    </>
-
-
-  )
+return (
+<Router>
+<div style={{ minHeight: '100vh', width: '100', display: 'flex', flexDirection: 'column' }}>
+<Header/>
+<Routes>
+  <Route path="/" element={<Home />} />
+  <Route path="/products" element={<Products />} />
+  <Route path="/about" element={<About />} />
+  <Route path="/contact" element={<Contact />} />
+  <Route path="/auth" element={<AuthForm />} />
+</Routes>
+<Footer/>
+</div>
+</Router>
+)
 }
 
 export default App
