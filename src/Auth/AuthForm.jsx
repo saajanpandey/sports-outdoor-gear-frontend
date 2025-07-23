@@ -4,10 +4,13 @@ import { useNavigate } from "react-router-dom";
 import './AuthForm.css';
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+
 
 
 export default function AuthForm({ setIsLoggedIn }) {
   const [isLogin, setIsLogin] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -16,8 +19,8 @@ export default function AuthForm({ setIsLoggedIn }) {
     address: '',
     phone: '',
     email: '',
-    password: '',
-    role: '',
+    password: ''
+    // role: '',
   });
 
   const handleChange = (e) => {
@@ -26,8 +29,9 @@ export default function AuthForm({ setIsLoggedIn }) {
 
   const handleSignup = async () => {
     const { first_name, last_name, address, phone, email, password, role } = formData;
+    console.log("Signup form data:", formData); // Add this line
 
-    if (!email || !password || !first_name || !last_name || !address || !phone || !role) {
+    if (!email || !password || !first_name || !last_name || !address || !phone) {
       alert("Please fill in all fields!");
       return;
     }
@@ -40,38 +44,35 @@ export default function AuthForm({ setIsLoggedIn }) {
         phone,
         email,
         password,
-        role: parseInt(role) || 0 // assuming role is a number like 0 for user
+        role: 1
       });
 
-      alert("Registration successful!");
+      // alert("Registration successful!");
       console.log("User registered:", response.data);
       setIsLogin(true); // Switch to login
+      setTimeout(() => {
+        toast.success("Signun successful!", { position: "top-right", autoClose: 3000 });
+      }, 100);
     } catch (error) {
       console.error("Signup error:", error.response?.data || error.message);
-      alert("Signup failed. Check console for details.");
+      toast.error("Signup failed. Please check your credentials.");
     }
   };
 
   const handleLogin = async () => {
     const { email, password } = formData;
-
     if (!email || !password) {
       toast.error("Please enter email and password!");
       return;
     }
-
     try {
-      const response = await axios.post("http://localhost:3000/api/user/login", {
-        email,
-        password,
-      });
+      const response = await axios.post("http://localhost:3000/api/user/login", { email, password, });
       setIsLoggedIn(true);
       localStorage.setItem('isLoggedIn', 'true');
-      navigate('/home'); 
+      navigate('/home');
       setTimeout(() => {
         toast.success("Login successful!", { position: "top-right", autoClose: 3000 });
-      }, 100); 
-
+      }, 100);
       console.log("User logged in:", response.data);
     } catch (error) {
       console.error("Login error:", error.response?.data || error.message);
@@ -85,14 +86,21 @@ export default function AuthForm({ setIsLoggedIn }) {
     <div className="container">
       <div className="form-container">
         <div className="form-toggle">
-  <button className={isLogin ? 'active login-active' : ""} onClick={() => setIsLogin(true)}>Login</button>
-  <button className={!isLogin ? 'active signup-active' : ""} onClick={() => setIsLogin(false)}>Signup</button>
-</div>
+          <button className={isLogin ? 'active login-active' : ""} onClick={() => setIsLogin(true)}>Login</button>
+          <button className={!isLogin ? 'active signup-active' : ""} onClick={() => setIsLogin(false)}>Signup</button>
+        </div>
 
         {isLogin ? (
           <div className="form">
             <input type="email" name="email" placeholder="Email" required onChange={handleChange} value={formData.email} />
-            <input type="password" name="password" placeholder="Password" required onChange={handleChange} value={formData.password} />
+            <div className="password-input-wrapper">
+              <input type={showPassword ? "text" : "password"} name="password" placeholder="Password" required onChange={handleChange} value={formData.password} />
+              <span className="toggle-password" onClick={() => setShowPassword(!showPassword)} style={{ cursor: 'pointer' }}>
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </span>
+            </div>
+
+            {/* <input type="password" name="password" placeholder="Password" required onChange={handleChange} value={formData.password} /> */}
             {/* <a href="#">Forgot Password?</a> */}
             <button onClick={handleLogin}>Login</button>
             {/* <p>Not a member? <a href="#" onClick={() => setIsLogin(false)}>SignUp Now</a></p> */}
@@ -104,8 +112,12 @@ export default function AuthForm({ setIsLoggedIn }) {
             <input type="text" name="address" placeholder="Address" required onChange={handleChange} />
             <input type="tel" name="phone" placeholder="Phone" required onChange={handleChange} />
             <input type="email" name="email" placeholder="Email" required onChange={handleChange} />
-            <input type="password" name="password" placeholder="Password" required onChange={handleChange} />
-            <input type="text" name="role" placeholder="Role (e.g., 0 for user)" required onChange={handleChange} />
+            <div className="password-input-wrapper">
+              <input type={showPassword ? "text" : "password"} name="password" placeholder="Password" required onChange={handleChange} value={formData.password} />
+              <span className="toggle-password" onClick={() => setShowPassword(!showPassword)} style={{ cursor: 'pointer' }}>
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </span>
+            </div>
             <button onClick={handleSignup}>SignUp</button>
           </div>
         )}

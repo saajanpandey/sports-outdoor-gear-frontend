@@ -76,6 +76,23 @@ body {
   font-size: 1rem;
   box-sizing: border-box;
 }
+.password-input-wrapper {
+  position: relative;
+}
+
+.password-input-wrapper input {
+  width: 100%;
+  padding-right: 35px;
+}
+
+.toggle-password {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
 
 .form input:focus {
   outline: 2px solid #033452;
