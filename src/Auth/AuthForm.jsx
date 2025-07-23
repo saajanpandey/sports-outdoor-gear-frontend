@@ -6,7 +6,7 @@ import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
 
-export default function AuthForm() {
+export default function AuthForm({ setIsLoggedIn }) {
   const [isLogin, setIsLogin] = useState(true);
   const navigate = useNavigate();
 
@@ -65,8 +65,13 @@ export default function AuthForm() {
         email,
         password,
       });
-      toast.success("Login successful!", { position: "top-right", autoClose: 7000 });
-      setTimeout(() => { navigate("/home"); }, 700);
+      setIsLoggedIn(true);
+      localStorage.setItem('isLoggedIn', 'true');
+      navigate('/home'); 
+      setTimeout(() => {
+        toast.success("Login successful!", { position: "top-right", autoClose: 3000 });
+      }, 100); 
+
       console.log("User logged in:", response.data);
     } catch (error) {
       console.error("Login error:", error.response?.data || error.message);
@@ -78,20 +83,19 @@ export default function AuthForm() {
 
   return (
     <div className="container">
-      <ToastContainer position="top-right" autoClose={7000} />
       <div className="form-container">
         <div className="form-toggle">
-          <button className={isLogin ? 'active' : ""} onClick={() => setIsLogin(true)}>Login</button>
-          <button className={!isLogin ? 'active' : ""} onClick={() => setIsLogin(false)}>Signup</button>
-        </div>
+  <button className={isLogin ? 'active login-active' : ""} onClick={() => setIsLogin(true)}>Login</button>
+  <button className={!isLogin ? 'active signup-active' : ""} onClick={() => setIsLogin(false)}>Signup</button>
+</div>
 
         {isLogin ? (
           <div className="form">
-            <input type="email" name="email" placeholder="Email" required onChange={handleChange} />
-            <input type="password" name="password" placeholder="Password" required onChange={handleChange} />
-            <a href="#">Forgot Password?</a>
+            <input type="email" name="email" placeholder="Email" required onChange={handleChange} value={formData.email} />
+            <input type="password" name="password" placeholder="Password" required onChange={handleChange} value={formData.password} />
+            {/* <a href="#">Forgot Password?</a> */}
             <button onClick={handleLogin}>Login</button>
-            <p>Not a member? <a href="#" onClick={() => setIsLogin(false)}>SignUp Now</a></p>
+            {/* <p>Not a member? <a href="#" onClick={() => setIsLogin(false)}>SignUp Now</a></p> */}
           </div>
         ) : (
           <div className="form">
