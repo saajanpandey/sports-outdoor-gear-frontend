@@ -71,6 +71,8 @@ export default function AuthForm({ setIsLoggedIn }) {
       console.log("Login response:", userData);
       // OLD
       localStorage.setItem('userId', userData._id);
+      
+      localStorage.setItem('user_data',JSON.stringify(userData));
 
       // TRY THIS BASED ON ACTUAL RESPONSE
       localStorage.setItem('userId', userData._id || userData._id);

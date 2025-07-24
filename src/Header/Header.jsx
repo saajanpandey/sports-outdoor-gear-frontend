@@ -1,16 +1,27 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import '../Header/Header.css';
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import "../Header/Header.css";
 
 function Header({ isLoggedIn, setIsLoggedIn }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [responseData, setResponseData] = useState(null);
   const navigate = useNavigate();
 
   const handleLogout = () => {
     setIsLoggedIn(false);
-    localStorage.removeItem('isLoggedIn');
-    navigate('/auth'); 
+    localStorage.removeItem("isLoggedIn");
+    navigate("/auth");
   };
+
+  useEffect(() => {
+    const storedData = localStorage.getItem("user_data");
+
+    console.log(storedData);
+
+    if (storedData) {
+      setResponseData(JSON.parse(storedData));
+    }
+  }, []);
 
   return (
     <header className="main-header">
@@ -18,7 +29,7 @@ function Header({ isLoggedIn, setIsLoggedIn }) {
         <h1>Sports Outdoor Gear</h1>
       </div>
 
-      <nav className={`header-center ${menuOpen ? 'open' : ''}`}>
+      <nav className={`header-center ${menuOpen ? "open" : ""}`}>
         <Link to="/">Home</Link>
         <Link to="/products">Products</Link>
         <Link to="/about">About</Link>
@@ -31,26 +42,26 @@ function Header({ isLoggedIn, setIsLoggedIn }) {
           </>
         ) : (
           <>
-            <Link to="/profile" className="profile-link">Profile</Link>
+            <Link to="/profile" className="profile-link">
+              {responseData.first_name + " " + responseData.last_name}
+            </Link>
             <button
               onClick={handleLogout}
               title="Logout"
               className="profile-button"
               style={{
-                
-                background: 'none',
-                border: '1px solid #ccc',
-                padding: '6px 12px',
-                borderRadius: '4px',
-                cursor: 'pointer',
-                fontSize: '1rem',
+                background: "none",
+                border: "1px solid #ccc",
+                padding: "6px 12px",
+                borderRadius: "4px",
+                cursor: "pointer",
+                fontSize: "1rem",
               }}
             >
               Logout
             </button>
           </>
         )}
-
       </nav>
 
       <div className="header-right">
