@@ -20,7 +20,6 @@ export default function AuthForm({ setIsLoggedIn }) {
     phone: '',
     email: '',
     password: ''
-    // role: '',
   });
 
   const handleChange = (e) => {
@@ -28,7 +27,7 @@ export default function AuthForm({ setIsLoggedIn }) {
   };
 
   const handleSignup = async () => {
-    const { first_name, last_name, address, phone, email, password, role } = formData;
+    const { first_name, last_name, address, phone, email, password } = formData;
     console.log("Signup form data:", formData); // Add this line
 
     if (!email || !password || !first_name || !last_name || !address || !phone) {
@@ -44,7 +43,7 @@ export default function AuthForm({ setIsLoggedIn }) {
         phone,
         email,
         password,
-        role: 1
+        role: 0
       });
 
       // alert("Registration successful!");
@@ -66,13 +65,20 @@ export default function AuthForm({ setIsLoggedIn }) {
       return;
     }
     try {
-      const response = await axios.post("http://localhost:3000/api/user/login", { email, password, });
-      setIsLoggedIn(true);
+      const emailTrimmed = email.trim().toLowerCase();
+      const response = await axios.post("http://localhost:3000/api/user/login", { email: emailTrimmed, password, });
+      const userData = response.data; // or response.data.user if wrapped
+      console.log("Login response:", userData);
+      // OLD
+      localStorage.setItem('userId', userData._id);
+
+      // TRY THIS BASED ON ACTUAL RESPONSE
+      localStorage.setItem('userId', userData._id || userData._id);
+      console.log("userId from localStorage:", localStorage.getItem('userId'));
       localStorage.setItem('isLoggedIn', 'true');
+      setIsLoggedIn(true);
       navigate('/home');
-      setTimeout(() => {
-        toast.success("Login successful!", { position: "top-right", autoClose: 3000 });
-      }, 100);
+      setTimeout(() => { toast.success("Login successful!", { position: "top-right", autoClose: 3000 }); }, 100);
       console.log("User logged in:", response.data);
     } catch (error) {
       console.error("Login error:", error.response?.data || error.message);

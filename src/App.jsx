@@ -10,6 +10,7 @@ import Products from './Products/Product';
 import AuthForm from './Auth/AuthForm';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Profile from './Profile/Profile';
 
 function App() {
   // State for login status
@@ -50,6 +51,9 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           {/* Pass setIsLoggedIn to AuthForm */}
           <Route path="/auth" element={<AuthForm setIsLoggedIn={setIsLoggedIn} />} />
+
+          <Route path="/profile" element={<Profile />} />
+
         </Routes>
 
         <Footer />

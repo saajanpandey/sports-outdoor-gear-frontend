@@ -30,17 +30,27 @@ function Header({ isLoggedIn, setIsLoggedIn }) {
             {/* <a href=".#register">Register</a> */}
           </>
         ) : (
-          <button
-            onClick={handleLogout}
-            title="Logout"
-            className="profile-button"
-            style={{
-              background: 'none', border: '1px solid #ccc', padding: '6px 12px', borderRadius: '4px', cursor: 'pointer', fontSize: '1rem',
-            }}
-          >
-            Logout
-          </button>
+          <>
+            <Link to="/profile" className="profile-link">Profile</Link>
+            <button
+              onClick={handleLogout}
+              title="Logout"
+              className="profile-button"
+              style={{
+                
+                background: 'none',
+                border: '1px solid #ccc',
+                padding: '6px 12px',
+                borderRadius: '4px',
+                cursor: 'pointer',
+                fontSize: '1rem',
+              }}
+            >
+              Logout
+            </button>
+          </>
         )}
+
       </nav>
 
       <div className="header-right">
