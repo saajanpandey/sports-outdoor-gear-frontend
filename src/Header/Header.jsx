@@ -9,7 +9,7 @@ function Header({ isLoggedIn, setIsLoggedIn }) {
   const handleLogout = () => {
     setIsLoggedIn(false);
     localStorage.removeItem('isLoggedIn');
-    navigate('/auth'); // Redirect to login/signup page
+    navigate('/auth'); 
   };
 
   return (
