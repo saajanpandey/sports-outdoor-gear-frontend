@@ -1,14 +1,3 @@
-body {
-  font-family: Arial, sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  margin: 0;
-  background-color: #0C67A0;
-  padding: 20px; /* add padding for small screens */
-  box-sizing: border-box;
-}
 
 .container {
   max-width: 400px;

@@ -58,3 +58,38 @@
 .product-detail-btn:hover {
   background-color: #005fa3;
 }
+
+.product-detail-price,
+.total-price {
+  font-size: 1.2rem;
+  margin-top: 1rem;
+  color: #333;
+  font-weight: 500;
+}
+
+.quantity-control {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin: 1.2rem 0;
+}
+
+.quantity-control button {
+  padding: 6px 16px;
+  font-size: 1.2rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #f0f0f0;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.quantity-control button:hover {
+  background-color: #ddd;
+}
+
+.quantity-control span {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
