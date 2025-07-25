@@ -50,7 +50,7 @@ export default function AuthForm({ setIsLoggedIn }) {
       console.log("User registered:", response.data);
       setIsLogin(true); // Switch to login
       setTimeout(() => {
-        toast.success("Signun successful!", { position: "top-right", autoClose: 3000 });
+        toast.success("Signup successful!", { position: "top-right", autoClose: 3000 });
       }, 100);
     } catch (error) {
       console.error("Signup error:", error.response?.data || error.message);

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import "./Profile.css";
 import axios from "axios";
+import Header from "../Header/Header";
 
 function Profile() {
   const [loading, setLoading] = useState(true);
@@ -12,9 +13,17 @@ function Profile() {
     last_name: "",
     address: "",
     phone: "",
-    email: "",
-    password: "",
   });
+
+  function updateLocalStorageUserData(updates) {
+    const storedData = localStorage.getItem("user_data");
+    const userData = storedData ? JSON.parse(storedData) : {};
+
+    // Merge existing data with updates
+    const updatedUserData = { ...userData, ...updates };
+
+    localStorage.setItem("user_data", JSON.stringify(updatedUserData));
+  }
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -36,15 +45,22 @@ function Profile() {
         last_name,
         address,
         phone,
-        email,
-        role: 0,
       });
+      updateLocalStorageUserData({
+        first_name: first_name,
+        last_name: last_name,
+      });
+
       setTimeout(() => {
         toast.success("Profile Update successful!", {
           position: "top-right",
           autoClose: 3000,
         });
       }, 100);
+
+      setTimeout(() => {
+        window.location.reload();
+      });
     } catch (error) {
       toast.error(error.message);
     }
@@ -108,6 +124,7 @@ function Profile() {
           />
           <input
             type="text"
+            name="last_name"
             value={formData.last_name || ""}
             required
             onChange={handleChange}
@@ -121,12 +138,14 @@ function Profile() {
           />
           <input
             type="text"
+            name="address"
             value={formData.address || ""}
             required
             onChange={handleChange}
           />
           <input
             type="text"
+            name="phone"
             value={formData.phone || ""}
             required
             onChange={handleChange}

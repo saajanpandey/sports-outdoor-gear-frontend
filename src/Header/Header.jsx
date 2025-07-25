@@ -16,8 +16,6 @@ function Header({ isLoggedIn, setIsLoggedIn }) {
   useEffect(() => {
     const storedData = localStorage.getItem("user_data");
 
-    console.log(storedData);
-
     if (storedData) {
       setResponseData(JSON.parse(storedData));
     }
@@ -45,6 +43,7 @@ function Header({ isLoggedIn, setIsLoggedIn }) {
             <Link to="/profile" className="profile-link">
               {responseData.first_name + " " + responseData.last_name}
             </Link>
+
             <button
               onClick={handleLogout}
               title="Logout"
