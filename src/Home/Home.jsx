@@ -8,12 +8,27 @@ import axios from 'axios';
 function Home() {
     const [categories, setCategories] = useState([]);
 
- useEffect(() => {
-    fetch('http://localhost:3000/api/category') 
+useEffect(() => {
+    fetch('http://localhost:3000/api/category')
       .then((res) => res.json())
-      .then((data) => setCategories(data.data))
-      .catch((err) => console.error('Error fetching categories:', err));
+      .then((data) => {
+        const categoryList = Array.isArray(data) ? data : data.data;
+        if (Array.isArray(categoryList)) {
+          setCategories(categoryList);
+        } else {
+          console.error('Unexpected data format from API:', data);
+          setCategories([]); 
+        }
+      })
+      .catch((err) => {
+        console.error('Error fetching categories:', err);
+        setCategories([]); 
+      });
   }, []);
+
+  if (!Array.isArray(categories)) {
+    return <p>Loading...</p>;
+  }
   return (
     <>
     
@@ -68,20 +83,21 @@ function Home() {
         </section> */}
 
  <section className="categories" id="shop">
-        <h2>Shop by Category</h2>
-        <div className="category-list">
-          {categories.map((cat) => (
-            <div className="category-card" key={cat._id}>
-              <img
-                src={`http://localhost:3000${cat.image}`}
-                alt={cat.name}
-                
-              />
-              <h4>{cat.name.charAt(0).toUpperCase() + cat.name.slice(1)}</h4>
-            </div>
-          ))}
+  <h2>Shop by Category</h2>
+  <div className="category-list">
+    {categories.length > 0 ? (
+      categories.map((cat) => (
+        <div className="category-card" key={cat._id}>
+          <img src={`http://localhost:3000${cat.image}`} alt={cat.name} />
+          <h4>{cat.name.charAt(0).toUpperCase() + cat.name.slice(1)}</h4>
         </div>
-      </section>
+      ))
+    ) : (
+      <p>No categories found.</p>
+    )}
+  </div>
+</section>
+
 
 <section className="featured-products">
           <h2>Featured Products</h2>
