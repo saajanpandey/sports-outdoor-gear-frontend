@@ -42,7 +42,6 @@ function Checkout() {
       return;
     }
 
-    // Proceed with fake payment & order confirmation
     setOrderId(generateOrderId());
     setDeliveryDate(estimateDelivery());
     setOrderPlaced(true);
@@ -110,7 +109,8 @@ function Checkout() {
           <div className="order-meta">
             <p><strong>Order ID:</strong> {orderId}</p>
             <p><strong>Estimated Delivery:</strong> {deliveryDate}</p>
-            <p><strong>Total Items:</strong> {totalItems}</p>
+            <p><strong>Total Price:</strong> ${cart.reduce((acc, item) => acc + item.price * item.quantity, 0).toFixed(2)}</p>
+
           </div>
 
           <div className="checkout-summary">
