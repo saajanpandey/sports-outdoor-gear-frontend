@@ -19,6 +19,10 @@ function App() {
   // State for login status
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  const [userRefreshToken, setUserRefreshToken] = useState(0);
+
+  const triggerUserRefresh = () => setUserRefreshToken((t) => t + 1);
+
   // Restore login state from localStorage on component mount
   useEffect(() => {
     const storedLogin = localStorage.getItem("isLoggedIn");
@@ -44,7 +48,7 @@ function App() {
         }}
       >
         {/* Pass login state and setter to Header */}
-        <Header isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+        <Header isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} userRefreshToken={userRefreshToken} />
 
         <Routes>
           <Route path="/" element={<Home />} />
@@ -61,7 +65,7 @@ function App() {
             element={<AuthForm setIsLoggedIn={setIsLoggedIn} />}
           />
 
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile" element={<Profile  triggerUserRefresh={triggerUserRefresh}/>} />
         </Routes>
 
         <Footer />

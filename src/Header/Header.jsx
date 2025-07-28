@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../Header/Header.css";
 
-function Header({ isLoggedIn, setIsLoggedIn }) {
+function Header({ isLoggedIn, setIsLoggedIn, userRefreshToken }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [responseData, setResponseData] = useState(null);
   const navigate = useNavigate();
@@ -19,7 +19,7 @@ function Header({ isLoggedIn, setIsLoggedIn }) {
     if (storedData) {
       setResponseData(JSON.parse(storedData));
     }
-  }, []);
+  }, [userRefreshToken]);
 
   return (
     <header className="main-header">

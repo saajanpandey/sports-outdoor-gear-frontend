@@ -4,7 +4,7 @@ import "./Profile.css";
 import axios from "axios";
 import Header from "../Header/Header";
 
-function Profile() {
+function Profile({ triggerUserRefresh }) {
   const [loading, setLoading] = useState(true);
   const userId = localStorage.getItem("userId");
 
@@ -51,6 +51,8 @@ function Profile() {
         last_name: last_name,
       });
 
+      if (triggerUserRefresh) triggerUserRefresh();
+
       setTimeout(() => {
         toast.success("Profile Update successful!", {
           position: "top-right",
@@ -58,9 +60,6 @@ function Profile() {
         });
       }, 100);
 
-      setTimeout(() => {
-        window.location.reload();
-      });
     } catch (error) {
       toast.error(error.message);
     }
