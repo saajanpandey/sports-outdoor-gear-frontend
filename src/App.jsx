@@ -1,29 +1,77 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import './App.css'
-import Home from './Home/Home'
-import About from './About/About'
-import Header from './Header/Header'
-import Footer from './Footer/Footer'
-import Contact from './Contact/Contact'
-import Products from './Products/Product'
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import './App.css';
+import Home from './Home/Home';
+import About from './About/About';
+import Header from './Header/Header';
+import Footer from './Footer/Footer';
+import Contact from './Contact/Contact';
+import ProductsClient from './Products/Product'; // Client-side Products
 
+import Navbar from './AdminLayout/components/navbar';
+import Sidebar from './AdminLayout/components/sidebar';
+import Customers from './AdminLayout/pages/Customers';
+import Dashboard from './AdminLayout/pages/Dashboard';
+import Orders from './AdminLayout/pages/Orders';
+import ProductsAdmin from './AdminLayout/pages/Products'; // Admin-side Products
+
+import { Box } from '@mui/material';
+
+// Layout for Admin Pages
+const AdminLayout = ({ children }) => (
+  <Box display="flex">
+    <Sidebar />
+    <Box flexGrow={1}>
+      <Navbar />
+      {children}
+    </Box>
+  </Box>
+);
+
+// Layout for Client Pages
+const ClientLayout = ({ children }) => (
+  <>
+    <Header />
+    {children}
+    <Footer />
+  </>
+);
+
+// Route Manager
+const AppRoutes = () => {
+  const location = useLocation();
+  const isAdmin = location.pathname.startsWith('/admin');
+
+  return isAdmin ? (
+    <AdminLayout>
+      <Routes>
+        <Route path="/admin" element={<Dashboard />} />
+        <Route path="/admin/products" element={<ProductsAdmin />} />
+        <Route path="/admin/orders" element={<Orders />} />
+        <Route path="/admin/customers" element={<Customers />} />
+        {/* Redirect from "/" to "/admin" by default */}
+        <Route path="/" element={<Navigate to="/admin" />} />
+      </Routes>
+    </AdminLayout>
+  ) : (
+    <ClientLayout>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/products" element={<ProductsClient />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
+      </Routes>
+    </ClientLayout>
+  );
+};
 
 function App() {
-
-return (
-<Router>
-<div style={{ minHeight: '100vh', width: '100', display: 'flex', flexDirection: 'column' }}>
-<Header/>
-<Routes>
-  <Route path="/" element={<Home />} />
-  <Route path="/products" element={<Products />} />
-  <Route path="/about" element={<About />} />
-  <Route path="/contact" element={<Contact />} />
-</Routes>
-<Footer/>
-</div>
-</Router>
-)
+  return (
+    <Router>
+      <div style={{ minHeight: '100vh', width: '100%' }}>
+        <AppRoutes />
+      </div>
+    </Router>
+  );
 }
 
-export default App
+export default App;
