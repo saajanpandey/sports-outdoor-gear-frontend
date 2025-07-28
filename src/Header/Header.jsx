@@ -19,7 +19,7 @@ function Header({ isLoggedIn, setIsLoggedIn, userRefreshToken }) {
     if (storedData) {
       setResponseData(JSON.parse(storedData));
     }
-  }, [userRefreshToken]);
+  }, [userRefreshToken, isLoggedIn]);
 
   return (
     <header className="main-header">
