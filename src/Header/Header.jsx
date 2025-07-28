@@ -41,7 +41,7 @@ function Header({ isLoggedIn, setIsLoggedIn, userRefreshToken }) {
         ) : (
           <>
             <Link to="/profile" className="profile-link">
-              {responseData.first_name + " " + responseData.last_name}
+              {responseData?.first_name + " " + responseData?.last_name}
             </Link>
 
             <button
