@@ -2,7 +2,6 @@ import React , { useEffect, useState } from 'react'
 import Header from '../Header/Header'
 import Footer from '../Footer/Footer'
 import '../Home/Home.css'
-import axios from 'axios';
 
 
 function Home() {
