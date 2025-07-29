@@ -9,12 +9,13 @@ import ProductsClient from './Products/Product'; // Client-side Products
 
 import Navbar from './AdminLayout/components/navbar';
 import Sidebar from './AdminLayout/components/sidebar';
-import Customers from './AdminLayout/pages/Customers';
+
 import Dashboard from './AdminLayout/pages/Dashboard';
-import Orders from './AdminLayout/pages/Orders';
+import Catagories from './AdminLayout/pages/catagories';
 import ProductsAdmin from './AdminLayout/pages/Products'; // Admin-side Products
 
 import { Box } from '@mui/material';
+import AddProduct from './AdminLayout/pages/AddProduct';
 
 // Layout for Admin Pages
 const AdminLayout = ({ children }) => (
@@ -46,8 +47,8 @@ const AppRoutes = () => {
       <Routes>
         <Route path="/admin" element={<Dashboard />} />
         <Route path="/admin/products" element={<ProductsAdmin />} />
-        <Route path="/admin/orders" element={<Orders />} />
-        <Route path="/admin/customers" element={<Customers />} />
+        <Route path="/admin/Catagories" element={<Catagories />} />
+        <Route path="/admin/AddProduct" element={<AddProduct />} />
         {/* Redirect from "/" to "/admin" by default */}
         <Route path="/" element={<Navigate to="/admin" />} />
       </Routes>

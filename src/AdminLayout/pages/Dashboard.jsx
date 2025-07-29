@@ -15,11 +15,11 @@ const Dashboard = () => (
   >
     <Paper elevation={3} sx={{ p: 2 }}>
       <Typography variant="h6">Total Products</Typography>
-      <Typography variant="h4">120</Typography>
+      <Typography variant="h4">10</Typography>
     </Paper>
     <Paper elevation={3} sx={{ p: 2 }}>
-      <Typography variant="h6">Orders</Typography>
-      <Typography variant="h4">56</Typography>
+      <Typography variant="h6">Catagories</Typography>
+      <Typography variant="h4">5</Typography>
     </Paper>
     {/* More cards here */}
   </Box>

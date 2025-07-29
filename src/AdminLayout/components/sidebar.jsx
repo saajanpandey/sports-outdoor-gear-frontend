@@ -13,9 +13,8 @@ import {
 } from '@mui/material';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import InventoryIcon from '@mui/icons-material/Inventory';
-import PeopleIcon from '@mui/icons-material/People';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import AddBoxIcon from '@mui/icons-material/AddBox'; // Icon for Add Product
 import { Link } from 'react-router-dom';
 
 const drawerWidth = 240;
@@ -25,12 +24,10 @@ const Sidebar = () => {
   const open = Boolean(anchorEl);
 
   const handleMenuOpen = (event) => {
-    console.log('Menu opened');
     setAnchorEl(event.currentTarget);
   };
 
   const handleMenuClose = () => {
-    console.log('Menu closed');
     setAnchorEl(null);
   };
 
@@ -85,7 +82,7 @@ const Sidebar = () => {
           </ListItem>
 
           <ListItem disablePadding>
-            <ListItemButton component={Link} to="admin/products">
+            <ListItemButton component={Link} to="/admin/products">
               <ListItemIcon>
                 <InventoryIcon />
               </ListItemIcon>
@@ -93,21 +90,13 @@ const Sidebar = () => {
             </ListItemButton>
           </ListItem>
 
+          {/* ✅ Add Product */}
           <ListItem disablePadding>
-            <ListItemButton component={Link} to="admin/orders">
+            <ListItemButton component={Link} to="/admin/AddProduct">
               <ListItemIcon>
-                <ShoppingCartIcon />
+                <AddBoxIcon />
               </ListItemIcon>
-              <ListItemText primary="Orders" />
-            </ListItemButton>
-          </ListItem>
-
-          <ListItem disablePadding>
-            <ListItemButton component={Link} to="admin/customers">
-              <ListItemIcon>
-                <PeopleIcon />
-              </ListItemIcon>
-              <ListItemText primary="Customers" />
+              <ListItemText primary="Add Product" />
             </ListItemButton>
           </ListItem>
         </List>
