@@ -11,6 +11,7 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa';
 export default function AuthForm({ setIsLoggedIn }) {
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -28,12 +29,30 @@ export default function AuthForm({ setIsLoggedIn }) {
 
   const handleSignup = async () => {
     const { first_name, last_name, address, phone, email, password } = formData;
-    console.log("Signup form data:", formData); // Add this line
 
     if (!email || !password || !first_name || !last_name || !address || !phone) {
-      alert("Please fill in all fields!");
+     setErrorMessage("Please fill in all fields!");
       return;
     }
+
+    const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+    if (!passwordPattern.test(password)) {
+      setErrorMessage(
+        "Password must be at least 6 characters long and contain letters and numbers."
+      );
+      return;
+    }
+
+    // Phone validation: digits only, 10-15 digits
+    const phonePattern = /^\d{10,15}$/;
+    if (!phonePattern.test(phone.trim())) {
+      setErrorMessage(
+        "Please enter a valid phone number (10-15 digits, numbers only)."
+      );
+      return;
+    }
+
+    setErrorMessage("");
 
     try {
       const response = await axios.post("http://localhost:3000/api/user/", {
@@ -53,8 +72,8 @@ export default function AuthForm({ setIsLoggedIn }) {
         toast.success("Signup successful!", { position: "top-right", autoClose: 3000 });
       }, 100);
     } catch (error) {
-      console.error("Signup error:", error.response?.data || error.message);
-      toast.error("Signup failed. Please check your credentials.");
+      console.error("Signup error:", error);
+      toast.error(`Signup failed. ${error.response?.data?.message}`);
     }
   };
 
@@ -68,7 +87,7 @@ export default function AuthForm({ setIsLoggedIn }) {
       const emailTrimmed = email.trim().toLowerCase();
       const response = await axios.post("http://localhost:3000/api/user/login", { email: emailTrimmed, password, });
       const userData = response.data; // or response.data.user if wrapped
-      console.log("Login response:", userData);
+      
       // OLD
       localStorage.setItem('userId', userData._id);
       
@@ -76,7 +95,6 @@ export default function AuthForm({ setIsLoggedIn }) {
 
       // TRY THIS BASED ON ACTUAL RESPONSE
       localStorage.setItem('userId', userData._id || userData._id);
-      console.log("userId from localStorage:", localStorage.getItem('userId'));
       localStorage.setItem('isLoggedIn', 'true');
       setIsLoggedIn(true);
       navigate('/home');
@@ -114,6 +132,12 @@ export default function AuthForm({ setIsLoggedIn }) {
             {/* <p>Not a member? <a href="#" onClick={() => setIsLogin(false)}>SignUp Now</a></p> */}
           </div>
         ) : (
+          <>
+          {errorMessage && (
+              <div className="error-message" style={{ color: 'red', marginBottom: '8px' }}>
+                {errorMessage}
+              </div>
+            )}
           <div className="form">
             <input type="text" name="first_name" placeholder="First Name" required onChange={handleChange} />
             <input type="text" name="last_name" placeholder="Last Name" required onChange={handleChange} />
@@ -128,6 +152,7 @@ export default function AuthForm({ setIsLoggedIn }) {
             </div>
             <button onClick={handleSignup}>SignUp</button>
           </div>
+          </>
         )}
       </div>
     </div>
