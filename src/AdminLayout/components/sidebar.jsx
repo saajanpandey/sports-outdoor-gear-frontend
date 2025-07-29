@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import {
   Drawer,
   List,
@@ -10,98 +9,92 @@ import {
   Menu,
   MenuItem,
   Box,
-} from '@mui/material';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import InventoryIcon from '@mui/icons-material/Inventory';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import AddBoxIcon from '@mui/icons-material/AddBox'; // Icon for Add Product
-import { Link } from 'react-router-dom';
+} from "@mui/material";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import InventoryIcon from "@mui/icons-material/Inventory";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import AddBoxIcon from "@mui/icons-material/AddBox"; // Icon for Add Product
+import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import CategoryIcon from "@mui/icons-material/Category";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const drawerWidth = 240;
 
-const Sidebar = () => {
-  const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
+const Sidebar = ({ userRole }) => {
+  const navigate = useNavigate();
 
-  const handleMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
+  useEffect(() => {
+    if (
+      (!userRole == "admin" || userRole == null) &&
+      window.location.pathname.startsWith("/admin")
+    ) {
+      navigate("/login/admin");
+    }
+  }, [userRole, navigate]);
 
   return (
-    <Drawer
-      variant="permanent"
-      anchor="left"
-      sx={{
-        width: drawerWidth,
-        flexShrink: 0,
-        overflow: 'visible',
-        zIndex: (theme) => theme.zIndex.drawer,
-        '& .MuiDrawer-paper': {
+    <>
+      <ToastContainer position="top-right" autoClose={3000} />
+      <Drawer
+        variant="permanent"
+        anchor="left"
+        sx={{
           width: drawerWidth,
-          boxSizing: 'border-box',
-          overflow: 'visible',
-        },
-      }}
-    >
-      <Box sx={{ position: 'relative' }}>
-        <List>
-          <ListItem disablePadding>
-            <ListItemButton component={Link} to="/admin">
-              <ListItemIcon>
-                <DashboardIcon />
-              </ListItemIcon>
-              <ListItemText primary="Dashboard" />
-            </ListItemButton>
+          flexShrink: 0,
+          overflow: "visible",
+          zIndex: (theme) => theme.zIndex.drawer,
+          "& .MuiDrawer-paper": {
+            width: drawerWidth,
+            boxSizing: "border-box",
+            overflow: "visible",
+          },
+        }}
+      >
+        <Box sx={{ position: "relative" }}>
+          <List>
+            <ListItem disablePadding>
+              <ListItemButton component={Link} to="/admin">
+                <ListItemIcon>
+                  <DashboardIcon />
+                </ListItemIcon>
+                <ListItemText primary="Dashboard" />
+              </ListItemButton>
+            </ListItem>
 
-            <IconButton
-              onClick={handleMenuOpen}
-              size="small"
-              sx={{ ml: 1 }}
-              aria-controls={open ? 'sidebar-menu' : undefined}
-              aria-haspopup="true"
-              aria-expanded={open ? 'true' : undefined}
-            >
-              <MoreVertIcon />
-            </IconButton>
+            <ListItem disablePadding>
+              <ListItemButton component={Link} to="/admin/products">
+                <ListItemIcon>
+                  <InventoryIcon />
+                </ListItemIcon>
+                <ListItemText primary="Products" />
+              </ListItemButton>
+            </ListItem>
 
-            <Menu
-              id="sidebar-menu"
-              anchorEl={anchorEl}
-              open={open}
-              onClose={handleMenuClose}
-              anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-              transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-            >
-              <MenuItem onClick={handleMenuClose}>Option 1</MenuItem>
-              <MenuItem onClick={handleMenuClose}>Option 2</MenuItem>
-            </Menu>
-          </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton component={Link} to="/admin/categories">
+                <ListItemIcon>
+                  <CategoryIcon />
+                </ListItemIcon>
+                <ListItemText primary="Categories" />
+              </ListItemButton>
+            </ListItem>
 
-          <ListItem disablePadding>
-            <ListItemButton component={Link} to="/admin/products">
-              <ListItemIcon>
-                <InventoryIcon />
-              </ListItemIcon>
-              <ListItemText primary="Products" />
-            </ListItemButton>
-          </ListItem>
-
-          {/* ✅ Add Product */}
-          <ListItem disablePadding>
-            <ListItemButton component={Link} to="/admin/AddProduct">
-              <ListItemIcon>
-                <AddBoxIcon />
-              </ListItemIcon>
-              <ListItemText primary="Add Product" />
-            </ListItemButton>
-          </ListItem>
-        </List>
-      </Box>
-    </Drawer>
+            {/* ✅ Add Product */}
+            {/* <ListItem disablePadding>
+              <ListItemButton component={Link} to="/admin/AddProduct">
+                <ListItemIcon>
+                  <AddBoxIcon />
+                </ListItemIcon>
+                <ListItemText primary="Add Product" />
+              </ListItemButton>
+            </ListItem> */}
+          </List>
+        </Box>
+      </Drawer>
+    </>
   );
 };
 

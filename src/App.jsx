@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Router, Routes, Route, useNavigate } from "react-router-dom";
-import { Navigate } from "react-router-dom";
 import "./App.css";
 import Home from "./Home/Home";
 import About from "./About/About";
@@ -19,12 +18,13 @@ import Navbar from "./AdminLayout/components/navbar";
 import Sidebar from "./AdminLayout/components/sidebar";
 
 import Dashboard from "./AdminLayout/pages/Dashboard";
-import Catagories from "./AdminLayout/pages/catagories";
 import ProductsAdmin from "./AdminLayout/pages/Products"; // Admin-side Products
 
 import { Box } from "@mui/material";
 import AddProduct from "./AdminLayout/pages/AddProduct";
 import AdminLogin from "./Auth/AdminLogin";
+import AddCategory from "./AdminLayout/pages/AddCategory";
+import AdminCategories from "./AdminLayout/pages/categories";
 
 function App() {
   const navigate = useNavigate();
@@ -75,13 +75,16 @@ function App() {
 
   // Admin Layout
   const AdminLayout = ({ children }) => (
-    <Box display="flex">
-      <Sidebar />
-      <Box flexGrow={1}>
-        <Navbar />
-        {children}
+    <>
+      <ToastContainer position="top-right" autoClose={3000} />
+      <Box display="flex">
+        <Sidebar userRole={userRole} />
+        <Box flexGrow={1}>
+          <Navbar />
+          {children}
+        </Box>
       </Box>
-    </Box>
+    </>
   );
 
   // const User Layout
@@ -89,6 +92,7 @@ function App() {
     <div
       style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}
     >
+      <ToastContainer position="top-right" autoClose={3000} />
       <Header
         isLoggedIn={isLoggedIn}
         setIsLoggedIn={setIsLoggedIn}
@@ -101,15 +105,14 @@ function App() {
 
   return (
     <>
-      <ToastContainer position="top-right" autoClose={3000} />
-
       {userRole == "admin" ? (
         <AdminLayout>
           <Routes>
             <Route path="/admin/dashboard" element={<Dashboard />} />
             <Route path="/admin/products" element={<ProductsAdmin />} />
-            <Route path="/admin/Catagories" element={<Catagories />} />
-            <Route path="/admin/AddProduct" element={<AddProduct />} />
+            <Route path="/admin/categories" element={<AdminCategories />} />
+            <Route path="/admin/addproduct" element={<AddProduct />} />
+            <Route path="/admin/addcategory" element={<AddCategory />} />
           </Routes>
         </AdminLayout>
       ) : isLoggedIn ? (

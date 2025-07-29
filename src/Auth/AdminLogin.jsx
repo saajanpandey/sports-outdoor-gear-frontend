@@ -47,8 +47,6 @@ export default function AdminLogin({ setUserRole }) {
       } else {
         toast.error("Access denied. Invalid credentials.");
       }
-
-      console.log("Login response:", response.data);
     } catch (error) {
       console.error("Login error:", error.response?.data || error.message);
       toast.error("Login failed. Invalid credentials.");
@@ -56,38 +54,39 @@ export default function AdminLogin({ setUserRole }) {
   };
 
   return (
-    <div className="split-container">
-      <ToastContainer position="top-right" autoClose={3000} />
-      <div className="split-image">
-        <img
-          src="https://images.pexels.com/photos/33176662/pexels-photo-33176662.png"
-          alt="Admin illustration"
-        />
-      </div>
-      <div className="split-form">
-        <div className="admin-form">
-          <h2>Admin Sign In</h2>
-          <input
-            type="email"
-            name="email"
-            placeholder="Admin Email"
-            required
-            onChange={handleChange}
-            value={formData.email}
+    <>
+      <div className="split-container">
+        <div className="split-image">
+          <img
+            src="https://images.pexels.com/photos/33176662/pexels-photo-33176662.png"
+            alt="Admin illustration"
           />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            required
-            onChange={handleChange}
-            value={formData.password}
-          />
-          <button type="submit" onClick={handleLogin}>
-            Login
-          </button>
+        </div>
+        <div className="split-form">
+          <div className="admin-form">
+            <h2>Admin Sign In</h2>
+            <input
+              type="email"
+              name="email"
+              placeholder="Admin Email"
+              required
+              onChange={handleChange}
+              value={formData.email}
+            />
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              required
+              onChange={handleChange}
+              value={formData.password}
+            />
+            <button type="submit" onClick={handleLogin}>
+              Login
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

@@ -17,48 +17,40 @@ import {
 
 import SpeedDial from "@mui/material/SpeedDial";
 import SpeedDialIcon from "@mui/material/SpeedDialIcon";
-import { toast, ToastContainer } from "react-toastify";
 
-
-const AdminProducts = () => {
-  const [products, setProducts] = useState([]);
+const AdminCategories = () => {
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  const fetchProducts = async () => {
+  const fetchCategories = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/api/product");
-      setProducts(res.data); // Adjust based on your backend response
+      const res = await axios.get("http://localhost:3000/api/category");
+      setCategories(res.data); // Adjust based on your backend response
     } catch (err) {
-      console.error("Error fetching products:", err);
+      console.error("Error fetching categories:", err);
     } finally {
       setLoading(false);
     }
   };
 
   const handleClick = () => {
-    navigate("/admin/AddProduct");
+    navigate("/admin/AddCategory");
   };
 
   useEffect(() => {
-    fetchProducts();
+    fetchCategories();
   }, []);
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this product?"))
+    if (!window.confirm("Are you sure you want to delete this category?"))
       return;
 
     try {
-      await axios.delete(`http://localhost:3000/api/product/${id}`);
-      setProducts(products.filter((p) => p._id !== id));
-      setTimeout(() => {
-              toast.success("Product Deleted Successfully", {
-                position: "top-right",
-                autoClose: 3000,
-              });
-            }, 100);
+      await axios.delete(`http://localhost:3000/api/category/${id}`);
+      setCategories(categories.filter((c) => c._id !== id));
     } catch (err) {
-      console.error("Error deleting product:", err);
+      console.error("Error deleting  categories:", err);
     }
   };
 
@@ -66,7 +58,7 @@ const AdminProducts = () => {
     <>
       <Box sx={{ padding: 3 }}>
         <Typography variant="h4" gutterBottom>
-          Products
+          Categories
         </Typography>
 
         {loading ? (
@@ -80,37 +72,20 @@ const AdminProducts = () => {
                     <strong>Name</strong>
                   </TableCell>
                   <TableCell>
-                    <strong>Description</strong>
-                  </TableCell>
-                  <TableCell>
-                    <strong>Price</strong>
-                  </TableCell>
-                  <TableCell>
-                    <strong>Category</strong>
-                  </TableCell>
-                  <TableCell>
-                    <strong>Brand</strong>
-                  </TableCell>
-                  <TableCell>
                     <strong>Actions</strong>
                   </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {products.map((prod) => (
-                  <TableRow key={prod._id}>
-                    <TableCell>{prod.product_name}</TableCell>
-                    <TableCell>{prod.product_description}</TableCell>
-                    <TableCell>${prod.price}</TableCell>
-                    <TableCell>
-                      {prod.category?.name || prod.category}
-                    </TableCell>
-                    <TableCell>{prod.brand_name}</TableCell>
+                {categories.map((cat) => (
+                  <TableRow key={cat._id}>
+                    <TableCell>{cat.name}</TableCell>
+
                     <TableCell>
                       <Button
                         variant="contained"
                         color="error"
-                        onClick={() => handleDelete(prod._id)}
+                        onClick={() => handleDelete(cat._id)}
                       >
                         Delete
                       </Button>
@@ -123,7 +98,7 @@ const AdminProducts = () => {
         )}
       </Box>
       <SpeedDial
-        ariaLabel="Add new product"
+        ariaLabel="Add new category"
         sx={{ position: "fixed", bottom: 16, right: 16 }}
         icon={<SpeedDialIcon />}
         onClick={handleClick}
@@ -133,4 +108,4 @@ const AdminProducts = () => {
   );
 };
 
-export default AdminProducts;
+export default AdminCategories;
