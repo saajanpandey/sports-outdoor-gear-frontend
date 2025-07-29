@@ -25,6 +25,8 @@ import AddProduct from "./AdminLayout/pages/AddProduct";
 import AdminLogin from "./Auth/AdminLogin";
 import AddCategory from "./AdminLayout/pages/AddCategory";
 import AdminCategories from "./AdminLayout/pages/categories";
+import CategoryUpdate from "./AdminLayout/pages/CategoryUpdate";
+import ProductUpdate from "./AdminLayout/pages/ProductUpdate";
 
 function App() {
   const navigate = useNavigate();
@@ -113,6 +115,14 @@ function App() {
             <Route path="/admin/categories" element={<AdminCategories />} />
             <Route path="/admin/addproduct" element={<AddProduct />} />
             <Route path="/admin/addcategory" element={<AddCategory />} />
+            <Route
+              path="/admin/category/edit/:id"
+              element={<CategoryUpdate />}
+            />
+            <Route
+              path="/admin/product/edit/:id"
+              element={<ProductUpdate />}
+            />
           </Routes>
         </AdminLayout>
       ) : isLoggedIn ? (

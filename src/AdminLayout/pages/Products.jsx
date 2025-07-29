@@ -19,7 +19,6 @@ import SpeedDial from "@mui/material/SpeedDial";
 import SpeedDialIcon from "@mui/material/SpeedDialIcon";
 import { toast, ToastContainer } from "react-toastify";
 
-
 const AdminProducts = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -52,11 +51,11 @@ const AdminProducts = () => {
       await axios.delete(`http://localhost:3000/api/product/${id}`);
       setProducts(products.filter((p) => p._id !== id));
       setTimeout(() => {
-              toast.success("Product Deleted Successfully", {
-                position: "top-right",
-                autoClose: 3000,
-              });
-            }, 100);
+        toast.success("Product Deleted Successfully", {
+          position: "top-right",
+          autoClose: 3000,
+        });
+      }, 100);
     } catch (err) {
       console.error("Error deleting product:", err);
     }
@@ -107,6 +106,16 @@ const AdminProducts = () => {
                     </TableCell>
                     <TableCell>{prod.brand_name}</TableCell>
                     <TableCell>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={() =>
+                          navigate(`/admin/product/edit/${prod._id}`)
+                        }
+                        sx={{ mr: 1 }} // optional spacing between buttons
+                      >
+                        Edit
+                      </Button>
                       <Button
                         variant="contained"
                         color="error"

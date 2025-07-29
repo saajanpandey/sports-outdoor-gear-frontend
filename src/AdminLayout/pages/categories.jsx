@@ -14,7 +14,7 @@ import {
   CircularProgress,
   Box,
 } from "@mui/material";
-
+import { toast, ToastContainer } from "react-toastify";
 import SpeedDial from "@mui/material/SpeedDial";
 import SpeedDialIcon from "@mui/material/SpeedDialIcon";
 
@@ -49,6 +49,12 @@ const AdminCategories = () => {
     try {
       await axios.delete(`http://localhost:3000/api/category/${id}`);
       setCategories(categories.filter((c) => c._id !== id));
+      setTimeout(() => {
+        toast.success("Category Deleted Successfully", {
+          position: "top-right",
+          autoClose: 3000,
+        });
+      }, 100);
     } catch (err) {
       console.error("Error deleting  categories:", err);
     }
@@ -82,6 +88,16 @@ const AdminCategories = () => {
                     <TableCell>{cat.name}</TableCell>
 
                     <TableCell>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={() =>
+                          navigate(`/admin/category/edit/${cat._id}`)
+                        }
+                        sx={{ mr: 1 }} // optional spacing between buttons
+                      >
+                        Edit
+                      </Button>
                       <Button
                         variant="contained"
                         color="error"
