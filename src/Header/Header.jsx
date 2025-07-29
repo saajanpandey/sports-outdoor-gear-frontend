@@ -46,16 +46,8 @@ function Header({ isLoggedIn, setIsLoggedIn, userRefreshToken }) {
 
             <button
               onClick={handleLogout}
-              title="Logout"
               className="profile-button"
-              style={{
-                background: "none",
-                border: "1px solid #ccc",
-                padding: "6px 12px",
-                borderRadius: "4px",
-                cursor: "pointer",
-                fontSize: "1rem",
-              }}
+              title="Logout"
             >
               Logout
             </button>
