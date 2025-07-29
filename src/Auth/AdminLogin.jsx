@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import './AuthForm.css';
+import "./AdminLogin.css";
 import { toast, ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 
-export default function AdminLogin({ setIsLoggedIn }) {
+export default function AdminLogin({ setUserRole }) {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
 
   const handleChange = (e) => {
@@ -25,22 +25,27 @@ export default function AdminLogin({ setIsLoggedIn }) {
     }
 
     try {
-      const response = await axios.post("http://localhost:3000/api/user/login", {
-        email,
-        password,
-      });
+      const response = await axios.post(
+        "http://localhost:3000/api/user/admin/login",
+        {
+          email,
+          password,
+        }
+      );
 
-      const user = response.data?.user || response.data;
+      const user = response.data;
 
       // Check if the user is an admin (assuming role is a string or number, like "admin" or 1)
       if (user.role === "admin" || user.role === 1) {
-        setIsLoggedIn(true);
-        localStorage.setItem('isLoggedIn', 'true');
-        localStorage.setItem('userRole', user.role);
-        navigate('/admin/dashboard'); // redirect to admin dashboard
-        toast.success("Admin login successful!", { position: "top-right", autoClose: 3000 });
+        setUserRole("admin");
+        localStorage.setItem("userRole", "admin");
+        navigate("/admin/dashboard"); // redirect to admin dashboard
+        toast.success("Admin login successful!", {
+          position: "top-right",
+          autoClose: 3000,
+        });
       } else {
-        toast.error("Access denied. Admins only.");
+        toast.error("Access denied. Invalid credentials.");
       }
 
       console.log("Login response:", response.data);
@@ -51,11 +56,17 @@ export default function AdminLogin({ setIsLoggedIn }) {
   };
 
   return (
-    <div className="container">
+    <div className="split-container">
       <ToastContainer position="top-right" autoClose={3000} />
-      <div className="form-container">
-        <h2>Admin Sign In</h2>
-        <div className="form">
+      <div className="split-image">
+        <img
+          src="https://images.pexels.com/photos/33176662/pexels-photo-33176662.png"
+          alt="Admin illustration"
+        />
+      </div>
+      <div className="split-form">
+        <div className="admin-form">
+          <h2>Admin Sign In</h2>
           <input
             type="email"
             name="email"
@@ -72,7 +83,9 @@ export default function AdminLogin({ setIsLoggedIn }) {
             onChange={handleChange}
             value={formData.password}
           />
-          <button onClick={handleLogin}>Login</button>
+          <button type="submit" onClick={handleLogin}>
+            Login
+          </button>
         </div>
       </div>
     </div>

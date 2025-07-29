@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Router, Routes, Route, useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import "./App.css";
 import Home from "./Home/Home";
 import About from "./About/About";
@@ -14,20 +15,22 @@ import ProductDetail from "./ProductDetail/ProductDetail";
 import Cart from "./Cart/Cart";
 import Checkout from "./Checkout/Checkout";
 import Profile from "./Profile/Profile";
-import Navbar from './AdminLayout/components/navbar';
-import Sidebar from './AdminLayout/components/sidebar';
+import Navbar from "./AdminLayout/components/navbar";
+import Sidebar from "./AdminLayout/components/sidebar";
 
-import Dashboard from './AdminLayout/pages/Dashboard';
-import Catagories from './AdminLayout/pages/catagories';
-import ProductsAdmin from './AdminLayout/pages/Products'; // Admin-side Products
+import Dashboard from "./AdminLayout/pages/Dashboard";
+import Catagories from "./AdminLayout/pages/catagories";
+import ProductsAdmin from "./AdminLayout/pages/Products"; // Admin-side Products
 
-import { Box } from '@mui/material';
-import AddProduct from './AdminLayout/pages/AddProduct';
+import { Box } from "@mui/material";
+import AddProduct from "./AdminLayout/pages/AddProduct";
+import AdminLogin from "./Auth/AdminLogin";
 
 function App() {
+  const navigate = useNavigate();
   // State for login status
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
+  const [userRole, setUserRole] = useState(null); // "user" or "admin"
   const [userRefreshToken, setUserRefreshToken] = useState(0);
 
   const triggerUserRefresh = () => setUserRefreshToken((t) => t + 1);
@@ -35,85 +38,128 @@ function App() {
   // Restore login state from localStorage on component mount
   useEffect(() => {
     const storedLogin = localStorage.getItem("isLoggedIn");
+    const storedRole = localStorage.getItem("userRole");
+    if (storedRole) {
+      setUserRole(storedRole);
+    }
     if (storedLogin === "true") {
       setIsLoggedIn(true);
     }
   }, []);
 
+  // Redirect to appropriate page based on role (if already logged in)
+  useEffect(() => {
+    if (userRole == "admin" && window.location.pathname === "/admin/login") {
+      navigate("/admin/dashboard");
+    }
+    if (isLoggedIn && window.location.pathname === "/admin/login") {
+      // If user is logged in, they should not access the admin login page
+      navigate("/home");
+    }
+    if (!isLoggedIn && window.location.pathname === "/profile") {
+      navigate("/auth");
+    }
+    if (
+      (!userRole == "admin" || userRole == null) &&
+      window.location.pathname.startsWith("/admin")
+    ) {
+      navigate("/login/admin");
+    }
+  }, [isLoggedIn, navigate, userRole]);
+
   // Persist login state to localStorage when it changes
   useEffect(() => {
     localStorage.setItem("isLoggedIn", isLoggedIn);
-  }, [isLoggedIn]);
+    localStorage.setItem("userRole", userRole);
+  }, [isLoggedIn, userRole]);
 
+  // Admin Layout
   const AdminLayout = ({ children }) => (
-  <Box display="flex">
-    <Sidebar />
-    <Box flexGrow={1}>
-      <Navbar />
-      {children}
+    <Box display="flex">
+      <Sidebar />
+      <Box flexGrow={1}>
+        <Navbar />
+        {children}
+      </Box>
     </Box>
-  </Box>
-);
+  );
 
-  // const location = useLocation();
-  // const isAdmin = location.pathname.startsWith('/admin');
-  const isAdmin = false;
+  // const User Layout
+  const UserLayout = ({ children }) => (
+    <div
+      style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}
+    >
+      <Header
+        isLoggedIn={isLoggedIn}
+        setIsLoggedIn={setIsLoggedIn}
+        userRefreshToken={userRefreshToken}
+      />
+      {children}
+      <Footer />
+    </div>
+  );
 
   return (
-    <Router>
-      
+    <>
       <ToastContainer position="top-right" autoClose={3000} />
 
-  
+      {userRole == "admin" ? (
+        <AdminLayout>
+          <Routes>
+            <Route path="/admin/dashboard" element={<Dashboard />} />
+            <Route path="/admin/products" element={<ProductsAdmin />} />
+            <Route path="/admin/Catagories" element={<Catagories />} />
+            <Route path="/admin/AddProduct" element={<AddProduct />} />
+          </Routes>
+        </AdminLayout>
+      ) : isLoggedIn ? (
+        <>
+          {/* Pass login state and setter to Header */}
 
-  {isAdmin ? (
-    <AdminLayout>
-      <Routes>
-        <Route path="/admin/dashboard" element={<Dashboard />} />
-        <Route path="/admin/products" element={<ProductsAdmin />} />
-        <Route path="/admin/Catagories" element={<Catagories />} />
-        <Route path="/admin/AddProduct" element={<AddProduct />} />
-      </Routes>
-    </AdminLayout>
-  ) : (
+          <UserLayout>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/home" element={<Home />} />
+              <Route path="/products" element={<Products />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/products/:productId" element={<ProductDetail />} />
+              <Route path="/cart" element={<Cart />} />
+              <Route path="/checkout" element={<Checkout />} />
+              {/* Pass setIsLoggedIn to AuthForm */}
 
-      <div
-        style={{
-          minHeight: "100vh",
-          width: "100",
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
-        {/* Pass login state and setter to Header */}
-        <Header isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} userRefreshToken={userRefreshToken} />
+              <Route
+                path="/profile"
+                element={<Profile triggerUserRefresh={triggerUserRefresh} />}
+              />
+            </Routes>
+          </UserLayout>
+        </>
+      ) : (
+        <UserLayout>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/products" element={<Products />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/products/:productId" element={<ProductDetail />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/checkout" element={<Checkout />} />
+            {/* Pass setIsLoggedIn to AuthForm */}
+            <Route
+              path="/auth"
+              element={<AuthForm setIsLoggedIn={setIsLoggedIn} />}
+            />
 
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/products" element={<Products />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/products/:productId" element={<ProductDetail />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/checkout" element={<Checkout />} />
-          {/* Pass setIsLoggedIn to AuthForm */}
-          <Route
-            path="/auth"
-            element={<AuthForm setIsLoggedIn={setIsLoggedIn} />}
-          />
-
-          <Route path="/profile" element={<Profile  triggerUserRefresh={triggerUserRefresh}/>} />
-        </Routes>
-
-        <Footer />
-        </div>
-  )}
-        </Router>
-         );
+            <Route
+              path="/login/admin"
+              element={<AdminLogin setUserRole={setUserRole} />}
+            />
+          </Routes>
+        </UserLayout>
+      )}
+    </>
+  );
 }
-        export default App;
-
-
-
-
+export default App;

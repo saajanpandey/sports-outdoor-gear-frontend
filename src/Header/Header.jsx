@@ -35,7 +35,7 @@ function Header({ isLoggedIn, setIsLoggedIn, userRefreshToken }) {
 
         {!isLoggedIn ? (
           <>
-            <Link to="/auth">Login</Link>
+            <Link to="/auth">Login/SignUp</Link>
             {/* <a href=".#register">Register</a> */}
           </>
         ) : (
