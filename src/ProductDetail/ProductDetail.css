@@ -83,6 +83,7 @@
   background-color: #f0f0f0;
   cursor: pointer;
   transition: background-color 0.2s ease;
+  color: black;
 }
 
 .quantity-control button:hover {
@@ -92,4 +93,5 @@
 .quantity-control span {
   font-size: 1.2rem;
   font-weight: bold;
+  color: black;
 }
