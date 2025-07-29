@@ -14,6 +14,15 @@ import ProductDetail from "./ProductDetail/ProductDetail";
 import Cart from "./Cart/Cart";
 import Checkout from "./Checkout/Checkout";
 import Profile from "./Profile/Profile";
+import Navbar from './AdminLayout/components/navbar';
+import Sidebar from './AdminLayout/components/sidebar';
+
+import Dashboard from './AdminLayout/pages/Dashboard';
+import Catagories from './AdminLayout/pages/catagories';
+import ProductsAdmin from './AdminLayout/pages/Products'; // Admin-side Products
+
+import { Box } from '@mui/material';
+import AddProduct from './AdminLayout/pages/AddProduct';
 
 function App() {
   // State for login status
@@ -36,9 +45,38 @@ function App() {
     localStorage.setItem("isLoggedIn", isLoggedIn);
   }, [isLoggedIn]);
 
+  const AdminLayout = ({ children }) => (
+  <Box display="flex">
+    <Sidebar />
+    <Box flexGrow={1}>
+      <Navbar />
+      {children}
+    </Box>
+  </Box>
+);
+
+  // const location = useLocation();
+  // const isAdmin = location.pathname.startsWith('/admin');
+  const isAdmin = false;
+
   return (
     <Router>
+      
       <ToastContainer position="top-right" autoClose={3000} />
+
+  
+
+  {isAdmin ? (
+    <AdminLayout>
+      <Routes>
+        <Route path="/admin/dashboard" element={<Dashboard />} />
+        <Route path="/admin/products" element={<ProductsAdmin />} />
+        <Route path="/admin/Catagories" element={<Catagories />} />
+        <Route path="/admin/AddProduct" element={<AddProduct />} />
+      </Routes>
+    </AdminLayout>
+  ) : (
+
       <div
         style={{
           minHeight: "100vh",
@@ -69,9 +107,13 @@ function App() {
         </Routes>
 
         <Footer />
-      </div>
-    </Router>
-  );
+        </div>
+  )}
+        </Router>
+         );
 }
+        export default App;
 
-export default App;
+
+
+
