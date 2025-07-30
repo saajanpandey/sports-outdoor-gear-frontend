@@ -12,6 +12,19 @@ function Home() {
 
     
 useEffect(() => {
+  fetch("http://localhost:3000/api/product")
+    .then((res) => res.json())
+    .then((data) => {
+      const productList = Array.isArray(data) ? data : data.data;
+      const featured = productList.filter(
+        (product) => product.is_featured === 1
+      );
+      setFeaturedProducts(featured);
+    })
+    .catch((err) => {
+      console.error("Error fetching products:", err);
+      setFeaturedProducts([]);
+    });
     fetch('http://localhost:3000/api/category')
       .then((res) => res.json())
       .then((data) => {
@@ -34,20 +47,20 @@ useEffect(() => {
   }
 
 
-   // Fetch products and filter featured ones
-  useEffect(() => {
-    fetch('http://localhost:3000/api/product')
-      .then((res) => res.json())
-      .then((data) => {
-        const productList = Array.isArray(data) ? data : data.data;
-        const featured = productList.filter((product) => product.is_featured === 1);
-        setFeaturedProducts(featured);
-      })
-      .catch((err) => {
-        console.error('Error fetching products:', err);
-        setFeaturedProducts([]);
-      });
-  }, []);
+  //  // Fetch products and filter featured ones
+  // useEffect(() => {
+  //   fetch('http://localhost:3000/api/product')
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       const productList = Array.isArray(data) ? data : data.data;
+  //       const featured = productList.filter((product) => product.is_featured === 1);
+  //       setFeaturedProducts(featured);
+  //     })
+  //     .catch((err) => {
+  //       console.error('Error fetching products:', err);
+  //       setFeaturedProducts([]);
+  //     });
+  // }, []);
 
   return (
     <>
