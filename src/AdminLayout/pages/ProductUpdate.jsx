@@ -190,7 +190,6 @@ const ProductUpdate = () => {
             type="number"
             value={productData.price}
             onChange={handleChange}
-            
             margin="normal"
           />
           <TextField
@@ -260,6 +259,14 @@ const ProductUpdate = () => {
             sx={{ mt: 2 }}
           >
             Update Product
+          </Button>
+          <Button
+            variant="contained"
+            color="secondary"
+            sx={{ mt: 2, ml:2 }}
+            onClick={() => navigate("/admin/products")}
+          >
+            Back
           </Button>
         </form>
       </Paper>

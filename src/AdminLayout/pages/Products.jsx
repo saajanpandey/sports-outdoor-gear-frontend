@@ -16,6 +16,7 @@ import {
 } from "@mui/material";
 
 import SpeedDial from "@mui/material/SpeedDial";
+import Chip from "@mui/material/Chip";
 import SpeedDialIcon from "@mui/material/SpeedDialIcon";
 import { toast, ToastContainer } from "react-toastify";
 
@@ -91,6 +92,9 @@ const AdminProducts = () => {
                     <strong>Brand</strong>
                   </TableCell>
                   <TableCell>
+                    <strong>Featured</strong>
+                  </TableCell>
+                  <TableCell>
                     <strong>Image</strong>
                   </TableCell>
                   <TableCell>
@@ -108,7 +112,19 @@ const AdminProducts = () => {
                       {prod.category?.name || prod.category}
                     </TableCell>
                     <TableCell>{prod.brand_name}</TableCell>
-                    <TableCell><img src={prod.image} style={{width:"100px", height:"100px"}}/></TableCell>
+                    <TableCell>
+                      {prod.is_featured == 1 ? (
+                        <Chip label="Yes" color="primary" />
+                      ) : (
+                        <Chip label="No" color="error" />
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      <img
+                        src={prod.image}
+                        style={{ width: "100px", height: "100px" }}
+                      />
+                    </TableCell>
                     <TableCell>
                       <Button
                         variant="contained"
