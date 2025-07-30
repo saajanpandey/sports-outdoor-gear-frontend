@@ -36,15 +36,15 @@ function AddCategory() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const formData = new FormData();
+    
 
-    const { name } = formData;
+    
 
-    if (!name) {
+    if (!categoryData.name) {
       setErrorMessage("Please fill in all fields!");
       return;
     }
-
+    const formData = new FormData();
     Object.entries(categoryData).forEach(([key, value]) => {
       formData.append(key, value);
     });

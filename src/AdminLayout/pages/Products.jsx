@@ -91,6 +91,9 @@ const AdminProducts = () => {
                     <strong>Brand</strong>
                   </TableCell>
                   <TableCell>
+                    <strong>Image</strong>
+                  </TableCell>
+                  <TableCell>
                     <strong>Actions</strong>
                   </TableCell>
                 </TableRow>
@@ -105,6 +108,7 @@ const AdminProducts = () => {
                       {prod.category?.name || prod.category}
                     </TableCell>
                     <TableCell>{prod.brand_name}</TableCell>
+                    <TableCell><img src={prod.image} style={{width:"100px", height:"100px"}}/></TableCell>
                     <TableCell>
                       <Button
                         variant="contained"

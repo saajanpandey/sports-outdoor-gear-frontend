@@ -78,6 +78,9 @@ const AdminCategories = () => {
                     <strong>Name</strong>
                   </TableCell>
                   <TableCell>
+                    <strong>Image</strong>
+                  </TableCell>
+                  <TableCell>
                     <strong>Actions</strong>
                   </TableCell>
                 </TableRow>
@@ -86,6 +89,13 @@ const AdminCategories = () => {
                 {categories.map((cat) => (
                   <TableRow key={cat._id}>
                     <TableCell>{cat.name}</TableCell>
+                    <TableCell>
+                      <img
+                        src={"http://localhost:3000" + cat.image}
+                        style={{width:"100px", height:"100px"}}
+                        alt="cat"
+                      />
+                    </TableCell>
 
                     <TableCell>
                       <Button

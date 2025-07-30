@@ -91,8 +91,6 @@ const ProductUpdate = () => {
       formData.append(key, value);
     });
 
-    console.log(productData);
-
 
     if (
       productData.product_name == "" ||
