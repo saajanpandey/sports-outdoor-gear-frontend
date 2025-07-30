@@ -119,10 +119,7 @@ function App() {
               path="/admin/category/edit/:id"
               element={<CategoryUpdate />}
             />
-            <Route
-              path="/admin/product/edit/:id"
-              element={<ProductUpdate />}
-            />
+            <Route path="/admin/product/edit/:id" element={<ProductUpdate />} />
           </Routes>
         </AdminLayout>
       ) : isLoggedIn ? (

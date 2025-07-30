@@ -128,11 +128,15 @@ const ContactUs = () => {
 
         <Grid container spacing={4} justifyContent="center" mt={2}>
           {[
-            { icon: <PhoneIcon />, label: "Phone", value: "+1 (123) 456-7890" },
+            {
+              icon: <PhoneIcon />,
+              label: "Phone",
+              value: "+1-234-567-8901",
+            },
             {
               icon: <EmailIcon />,
               label: "Email",
-              value: "support@example.com",
+              value: "info@sportsoutdoorgear.com",
             },
             {
               icon: <LocationOnIcon />,
