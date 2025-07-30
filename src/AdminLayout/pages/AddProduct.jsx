@@ -101,6 +101,8 @@ const AddProduct = () => {
       formData.append("image", imageFile);
     }
 
+    setErrorMessage("");
+
     try {
       await axios.post("http://localhost:3000/api/product", formData, {
         headers: {

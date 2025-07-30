@@ -127,6 +127,8 @@ const ProductUpdate = () => {
       formData.append("image", imageFile);
     }
 
+    setErrorMessage("");
+
     try {
       await axios.put(`http://localhost:3000/api/product/${id}`, formData, {
         headers: {

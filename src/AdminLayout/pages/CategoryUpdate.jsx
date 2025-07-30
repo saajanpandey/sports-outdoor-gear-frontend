@@ -67,7 +67,7 @@ const CategoryUpdate = () => {
     if (imageFile) {
       formData.append("image", imageFile);
     }
-
+    setErrorMessage("");
     try {
       await axios.put(`http://localhost:3000/api/category/${id}`, formData, {
         headers: {

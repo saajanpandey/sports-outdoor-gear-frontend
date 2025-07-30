@@ -38,19 +38,21 @@ function AddCategory() {
 
     const formData = new FormData();
 
-    const {name} = formData;
+    const { name } = formData;
 
-     if (!name) {
-       setErrorMessage("Please fill in all fields!");
-       return;
-     }
-     
+    if (!name) {
+      setErrorMessage("Please fill in all fields!");
+      return;
+    }
+
     Object.entries(categoryData).forEach(([key, value]) => {
       formData.append(key, value);
     });
     if (imageFile) {
       formData.append("image", imageFile);
     }
+
+    setErrorMessage("");
 
     try {
       await axios.post("http://localhost:3000/api/category", formData, {
