@@ -107,7 +107,6 @@ function Checkout() {
           <p>Your order has been successfully placed.</p>
 
           <div className="order-meta">
-            <p><strong>Order ID:</strong> {orderId}</p>
             <p><strong>Estimated Delivery:</strong> {deliveryDate}</p>
             <p><strong>Total Price:</strong> ${cart.reduce((acc, item) => acc + item.price * item.quantity, 0).toFixed(2)}</p>
 
@@ -119,8 +118,8 @@ function Checkout() {
               <div key={index} className="checkout-item">
                 <img src={item.image} alt={item.name} />
                 <div>
-                  <h4>{item.name}</h4>
-                  <p>{item.description}</p>
+                  <h4>{item.name || item.product_name}</h4>
+                  <p>{item.description || item.product_description}</p>
                 </div>
               </div>
             ))}
