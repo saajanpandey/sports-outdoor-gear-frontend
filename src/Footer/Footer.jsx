@@ -19,10 +19,10 @@ function Footer() {
             <li><Link to="/contact">Contact</Link></li>
           </ul>
         </div>
-        <div className="footer-section contact">
+        <div className="footer-section-contact">
           <h4>Contact Us</h4>
-          <p>Email: info@sportsoutdoorgear.com</p>
-          <p>Phone: +1 234 567 8901</p>
+          <p><a href="mailto:info@sportsoutdoorgear.com">Email: info@sportsoutdoorgear.com</a></p>
+          <p><a href="tel:+12345678901">Phone: +1-234-567-8901</a></p>
           <div className="footer-social">
             <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
               <img src="https://img.icons8.com/ios-filled/24/ffffff/facebook-new.png" alt="Facebook" />

@@ -35,7 +35,7 @@ const ContactUs = () => {
       <Grid
         container
         spacing={4}
-        justifyContent="flex-start"
+        justifyContent="center"
         sx={{ maxWidth: "1200px", mx: "auto" }} // Center container with max width
       >
         {/* Added empty Grid item to push form and map a bit right */}
@@ -129,7 +129,11 @@ const ContactUs = () => {
         <Grid container spacing={4} justifyContent="center" mt={2}>
           {[
             { icon: <PhoneIcon />, label: "Phone", value: "+1 (123) 456-7890" },
-            { icon: <EmailIcon />, label: "Email", value: "support@example.com" },
+            {
+              icon: <EmailIcon />,
+              label: "Email",
+              value: "support@example.com",
+            },
             {
               icon: <LocationOnIcon />,
               label: "Address",
@@ -217,7 +221,9 @@ const ContactUs = () => {
               },
             }}
           >
-            <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color: "inherit" }} />}>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon sx={{ color: "inherit" }} />}
+            >
               {faq.question}
             </AccordionSummary>
             <AccordionDetails>{faq.answer}</AccordionDetails>

@@ -54,7 +54,7 @@ function App() {
     if (userRole == "admin" && window.location.pathname === "/admin/login") {
       navigate("/admin/dashboard");
     }
-    if (isLoggedIn && window.location.pathname === "/admin/login") {
+    if (isLoggedIn && window.location.pathname === "/login/admin") {
       // If user is logged in, they should not access the admin login page
       navigate("/home");
     }
