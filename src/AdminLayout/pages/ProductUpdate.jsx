@@ -29,6 +29,7 @@ const ProductUpdate = () => {
   const [categories, setCategories] = useState([]);
   const [imageFile, setImageFile] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
 
   // Fetch categories and product data on mount
   useEffect(() => {
@@ -84,6 +85,40 @@ const ProductUpdate = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const {
+      product_name,
+      product_description,
+      price,
+      category,
+      brand_name,
+      is_featured,
+    } = formData;
+
+    if (
+      !product_name ||
+      !product_description ||
+      !price ||
+      !category ||
+      !brand_name ||
+      !is_featured
+    ) {
+      setErrorMessage("Please fill in all fields!");
+      return;
+    }
+
+    if (price <= 0) {
+      setErrorMessage("Price should be greater than zero.");
+      return;
+    }
+
+    const pricePattern = /^\d+(\.\d{1,2})?$/;
+    if (!pricePattern.test(price)) {
+      setErrorMessage(
+        "Price should contain numbers and decimal up to 2 decimal places."
+      );
+      return;
+    }
+
     const formData = new FormData();
     Object.entries(productData).forEach(([key, value]) => {
       formData.append(key, value);
@@ -126,6 +161,14 @@ const ProductUpdate = () => {
           Update Product
         </Typography>
 
+        {errorMessage && (
+          <div
+            className="error-message"
+            style={{ color: "red", marginBottom: "8px" }}
+          >
+            {errorMessage}
+          </div>
+        )}
         <form onSubmit={handleSubmit}>
           <TextField
             fullWidth
