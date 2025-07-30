@@ -1,0 +1,80 @@
+.split-container {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  min-height: 400px;
+}
+
+.split-image, .split-form {
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.split-image img {
+  width: 80%;
+  max-width: 400px;
+  border-radius: 18px;
+  object-fit: cover;
+  box-shadow: 0 2px 24px rgba(0,0,0,0.17);
+}
+
+.split-form {
+  background: #fff;
+  min-width: 300px;
+}
+
+.admin-form {
+  width: 80%;
+  max-width: 320px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.admin-form h2 {
+  text-align: center;
+  color: #223;
+  margin-bottom: 8px;
+}
+
+.admin-form input {
+  padding: 10px 14px;
+  border-radius: 7px;
+  border: 1px solid #ccd;
+  font-size: 1rem;
+  background: #f7fafc;
+  color: black;
+}
+
+.admin-form button {
+  padding: 11px 0;
+  border-radius: 7px;
+  border: none;
+  background: #4477ee;
+  color: #fff;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.16s;
+}
+
+.admin-form button:hover {
+  background: #2951d2;
+}
+
+@media (max-width: 800px) {
+  .split-container {
+    flex-direction: column;
+  }
+  .split-image, .split-form {
+    width: 100%;
+    min-width: 0;
+    min-height: 220px;
+  }
+  .split-form {
+    padding-top: 24px;
+  }
+}
