@@ -29,6 +29,7 @@ const ProductUpdate = () => {
   const [categories, setCategories] = useState([]);
   const [imageFile, setImageFile] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
 
   // Fetch categories and product data on mount
   useEffect(() => {
@@ -85,12 +86,43 @@ const ProductUpdate = () => {
     e.preventDefault();
 
     const formData = new FormData();
+
     Object.entries(productData).forEach(([key, value]) => {
       formData.append(key, value);
     });
+
+    console.log(productData);
+
+
+    if (
+      productData.product_name == "" ||
+      productData.product_description == "" ||
+      productData.price == "" ||
+      productData.category == "" ||
+      productData.brand_name == "" ||
+      productData.is_featured == ""
+    ) {
+      setErrorMessage("Please fill in all fields!");
+      return;
+    }
+
+    if (productData.price <= 0) {
+      setErrorMessage("Price should be greater than zero.");
+      return;
+    }
+    const pricePattern = /^\d+(\.\d{1,2})?$/;
+    if (!pricePattern.test(productData.price)) {
+      setErrorMessage(
+        "Price should contain numbers and decimal up to 2 decimal places."
+      );
+      return;
+    }
+
     if (imageFile) {
       formData.append("image", imageFile);
     }
+
+    setErrorMessage("");
 
     try {
       await axios.put(`http://localhost:3000/api/product/${id}`, formData, {
@@ -126,6 +158,14 @@ const ProductUpdate = () => {
           Update Product
         </Typography>
 
+        {errorMessage && (
+          <div
+            className="error-message"
+            style={{ color: "red", marginBottom: "8px" }}
+          >
+            {errorMessage}
+          </div>
+        )}
         <form onSubmit={handleSubmit}>
           <TextField
             fullWidth
@@ -152,7 +192,7 @@ const ProductUpdate = () => {
             type="number"
             value={productData.price}
             onChange={handleChange}
-            required
+            
             margin="normal"
           />
           <TextField

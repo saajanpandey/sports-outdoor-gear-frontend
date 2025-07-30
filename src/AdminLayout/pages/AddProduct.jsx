@@ -20,7 +20,9 @@ const AddProduct = () => {
     price: "",
     category: "",
     brand_name: "",
+    is_featured: "",
   });
+  const [errorMessage, setErrorMessage] = useState("");
 
   // State to hold categories fetched from API
   const [categories, setCategories] = useState([]);
@@ -57,6 +59,40 @@ const AddProduct = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const {
+      product_name,
+      product_description,
+      price,
+      category,
+      brand_name,
+      is_featured,
+    } = formData;
+
+    if (
+      !product_name ||
+      !product_description ||
+      !price ||
+      !category ||
+      !brand_name ||
+      !is_featured
+    ) {
+      setErrorMessage("Please fill in all fields!");
+      return;
+    }
+
+    if (price <= 0) {
+      setErrorMessage("Price should be greater than zero.");
+      return;
+    }
+
+    const pricePattern = /^\d+(\.\d{1,2})?$/;
+    if (!pricePattern.test(price)) {
+      setErrorMessage(
+        "Price should contain numbers and decimal up to 2 decimal places."
+      );
+      return;
+    }
+
     const formData = new FormData();
     Object.entries(productData).forEach(([key, value]) => {
       formData.append(key, value);
@@ -64,6 +100,8 @@ const AddProduct = () => {
     if (imageFile) {
       formData.append("image", imageFile);
     }
+
+    setErrorMessage("");
 
     try {
       await axios.post("http://localhost:3000/api/product", formData, {
@@ -104,7 +142,14 @@ const AddProduct = () => {
         <Typography variant="h4" mb={3}>
           Add New Product
         </Typography>
-
+        {errorMessage && (
+          <div
+            className="error-message"
+            style={{ color: "red", marginBottom: "8px" }}
+          >
+            {errorMessage}
+          </div>
+        )}
         <form onSubmit={handleSubmit}>
           <TextField
             fullWidth

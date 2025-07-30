@@ -15,6 +15,8 @@ function Profile({ triggerUserRefresh }) {
     phone: "",
   });
 
+  const [errorMessage, setErrorMessage] = useState("");
+
   function updateLocalStorageUserData(updates) {
     const storedData = localStorage.getItem("user_data");
     const userData = storedData ? JSON.parse(storedData) : {};
@@ -35,9 +37,19 @@ function Profile({ triggerUserRefresh }) {
     const { first_name, last_name, address, phone, email } = formData;
 
     if (!email || !first_name || !last_name || !address || !phone) {
-      alert("Please fill in all fields!");
+      setErrorMessage("Please fill in all fields!");
       return;
     }
+
+    const phonePattern = /^\d{10,15}$/;
+    if (!phonePattern.test(phone.trim())) {
+      setErrorMessage(
+        "Please enter a valid phone number (10-15 digits, numbers only)."
+      );
+      return;
+    }
+
+    setErrorMessage("");
 
     try {
       await axios.put(`http://localhost:3000/api/user/${userId}`, {
@@ -59,7 +71,6 @@ function Profile({ triggerUserRefresh }) {
           autoClose: 3000,
         });
       }, 100);
-
     } catch (error) {
       toast.error(error.message);
     }
@@ -113,6 +124,15 @@ function Profile({ triggerUserRefresh }) {
           <h2 style={{ textAlign: "center", marginBottom: "20px" }}>
             User Profile
           </h2>
+
+          {errorMessage && (
+            <div
+              className="error-message"
+              style={{ color: "red", marginBottom: "8px" }}
+            >
+              {errorMessage}
+            </div>
+          )}
 
           <input
             type="text"

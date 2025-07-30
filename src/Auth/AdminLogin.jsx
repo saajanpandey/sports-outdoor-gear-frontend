@@ -11,6 +11,7 @@ export default function AdminLogin({ setUserRole }) {
     email: "",
     password: "",
   });
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -20,7 +21,7 @@ export default function AdminLogin({ setUserRole }) {
     const { email, password } = formData;
 
     if (!email || !password) {
-      toast.error("Please enter email and password!");
+      setErrorMessage("Please fill in all fields!");
       return;
     }
 
@@ -65,6 +66,14 @@ export default function AdminLogin({ setUserRole }) {
         <div className="split-form">
           <div className="admin-form">
             <h2>Admin Sign In</h2>
+            {errorMessage && (
+              <div
+                className="error-message"
+                style={{ color: "red", marginBottom: "8px" }}
+              >
+                {errorMessage}
+              </div>
+            )}
             <input
               type="email"
               name="email"

@@ -2,11 +2,15 @@ import React , { useEffect, useState } from 'react'
 import Header from '../Header/Header'
 import Footer from '../Footer/Footer'
 import '../Home/Home.css'
+import { Link } from 'react-router-dom';
+
 
 
 function Home() {
     const [categories, setCategories] = useState([]);
+    const [featuredProducts, setFeaturedProducts] = useState([]);
 
+    
 useEffect(() => {
     fetch('http://localhost:3000/api/category')
       .then((res) => res.json())
@@ -28,6 +32,23 @@ useEffect(() => {
   if (!Array.isArray(categories)) {
     return <p>Loading...</p>;
   }
+
+
+   // Fetch products and filter featured ones
+  useEffect(() => {
+    fetch('http://localhost:3000/api/product')
+      .then((res) => res.json())
+      .then((data) => {
+        const productList = Array.isArray(data) ? data : data.data;
+        const featured = productList.filter((product) => product.is_featured === 1);
+        setFeaturedProducts(featured);
+      })
+      .catch((err) => {
+        console.error('Error fetching products:', err);
+        setFeaturedProducts([]);
+      });
+  }, []);
+
   return (
     <>
     
@@ -59,27 +80,6 @@ useEffect(() => {
           </div>
         </section>
 
-        {/* <section className="categories" id="shop">
-          <h2>Shop by Category</h2>
-          <div className="category-list">
-            <div className="category-card">
-              <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80" alt="Camping" />
-              <h4>Camping</h4>
-            </div>
-            <div className="category-card">
-              <img src="https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80" alt="Hiking" />
-              <h4>Hiking</h4>
-            </div>
-            <div className="category-card">
-              <img src="https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=400&q=80" alt="Cycling" />
-              <h4>Cycling</h4>
-            </div>
-            <div className="category-card">
-              <img src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=400&q=80" alt="Climbing" />
-              <h4>Climbing</h4>
-            </div>
-          </div>
-        </section> */}
 
  <section className="categories" id="shop">
   <h2>Shop by Category</h2>
@@ -97,28 +97,24 @@ useEffect(() => {
   </div>
 </section>
 
-
-<section className="featured-products">
+ <section className="featured-products">
           <h2>Featured Products</h2>
           <div className="product-list">
-            <div className="product-card">
-              <img src="https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&w=400&q=80" alt="Tent" />
-              <h4>All-Weather Tent</h4>
-              <p>Perfect for camping in any season. Durable, lightweight, and easy to set up.</p>
-              <button className="product-btn">View Details</button>
-            </div>
-            <div className="product-card">
-              <img src="https://images.pexels.com/photos/167706/pexels-photo-167706.jpeg" alt="Hiking Boots" />
-              <h4>Hiking Boots</h4>
-              <p>Comfortable and waterproof boots for long treks and rough terrain.</p>
-              <button className="product-btn">View Details</button>
-            </div>
-            <div className="product-card">
-              <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80" alt="Mountain Bike" />
-              <h4>Mountain Bike</h4>
-              <p>High-performance bike for off-road adventures and mountain trails.</p>
-              <button className="product-btn">View Details</button>
-            </div>
+            {featuredProducts.length > 0 ? (
+              featuredProducts.map((product) => (
+                <div className="product-card" key={product._id}>
+                  <img src={product.image} alt={product.product_name} />
+                  <h4>{product.product_name}</h4>
+                  <p>{product.product_description}</p>
+                  <p><strong>Price:</strong> ${parseFloat(product.price).toFixed(2)}</p>
+                <Link to={`/products/${product._id}`}>
+                  <button className="product-btn">View Details</button>
+                </Link>
+                </div>
+              ))
+            ) : (
+              <p>No featured products available.</p>
+            )}
           </div>
         </section>
 

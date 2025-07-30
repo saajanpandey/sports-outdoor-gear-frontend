@@ -56,7 +56,7 @@ const Sidebar = ({ userRole }) => {
         <Box sx={{ position: "relative" }}>
           <List>
             <ListItem disablePadding>
-              <ListItemButton component={Link} to="/admin">
+              <ListItemButton component={Link} to="/admin/dashboard">
                 <ListItemIcon>
                   <DashboardIcon />
                 </ListItemIcon>
