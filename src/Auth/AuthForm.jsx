@@ -145,8 +145,8 @@ export default function AuthForm({ setIsLoggedIn }) {
             <input type="tel" name="phone" placeholder="Phone" required onChange={handleChange} />
             <input type="email" name="email" placeholder="Email" required onChange={handleChange} />
             <div className="password-input-wrapper">
-              <input type={showPassword ? "text" : "password"} name="password" placeholder="Password" required onChange={handleChange} value={formData.password} />
-              <span className="toggle-password" onClick={() => setShowPassword(!showPassword)} style={{ cursor: 'pointer' }}>
+              <input type={showPassword ? "text" : "password"} name="password" placeholder="Password" required onChange={handleChange}/>
+              <span className="toggle-password" onClick={() => setShowPassword(!showPassword)} style={{ cursor: 'pointer',color:"black" }}>
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
               </span>
             </div>
