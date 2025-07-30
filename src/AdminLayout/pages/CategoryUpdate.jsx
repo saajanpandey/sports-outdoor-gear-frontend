@@ -55,19 +55,22 @@ const CategoryUpdate = () => {
 
     const formData = new FormData();
 
-    const { name } = formData;
-
-    if (!name) {
-      setErrorMessage("Please fill in all fields!");
-      return;
-    }
     Object.entries(categoryData).forEach(([key, value]) => {
       formData.append(key, value);
     });
+
     if (imageFile) {
       formData.append("image", imageFile);
     }
+
+
+    if (!categoryData.name) {
+      setErrorMessage("Please fill in all fields!");
+      return;
+    }
+
     setErrorMessage("");
+
     try {
       await axios.put(`http://localhost:3000/api/category/${id}`, formData, {
         headers: {
@@ -77,7 +80,7 @@ const CategoryUpdate = () => {
 
       // Optionally, navigate back to category list after update
       setTimeout(() => {
-        toast.success("Category updated successfully!");
+        toast.success("Category Updated successfully!");
       }, 100);
       navigate("/admin/categories");
     } catch (error) {

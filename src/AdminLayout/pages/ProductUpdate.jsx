@@ -85,44 +85,39 @@ const ProductUpdate = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const {
-      product_name,
-      product_description,
-      price,
-      category,
-      brand_name,
-      is_featured,
-    } = formData;
+    const formData = new FormData();
+
+    Object.entries(productData).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
+
+    console.log(productData);
+
 
     if (
-      !product_name ||
-      !product_description ||
-      !price ||
-      !category ||
-      !brand_name ||
-      !is_featured
+      productData.product_name == "" ||
+      productData.product_description == "" ||
+      productData.price == "" ||
+      productData.category == "" ||
+      productData.brand_name == "" ||
+      productData.is_featured == ""
     ) {
       setErrorMessage("Please fill in all fields!");
       return;
     }
 
-    if (price <= 0) {
+    if (productData.price <= 0) {
       setErrorMessage("Price should be greater than zero.");
       return;
     }
-
     const pricePattern = /^\d+(\.\d{1,2})?$/;
-    if (!pricePattern.test(price)) {
+    if (!pricePattern.test(productData.price)) {
       setErrorMessage(
         "Price should contain numbers and decimal up to 2 decimal places."
       );
       return;
     }
 
-    const formData = new FormData();
-    Object.entries(productData).forEach(([key, value]) => {
-      formData.append(key, value);
-    });
     if (imageFile) {
       formData.append("image", imageFile);
     }
@@ -197,7 +192,7 @@ const ProductUpdate = () => {
             type="number"
             value={productData.price}
             onChange={handleChange}
-            required
+            
             margin="normal"
           />
           <TextField
